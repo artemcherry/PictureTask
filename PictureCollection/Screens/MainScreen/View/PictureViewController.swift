@@ -41,12 +41,14 @@ final class PictureViewController: UIViewController {
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         
         if segmentControl.selectedSegmentIndex == 1 {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.pictures = self.dataService.loadPictures()
                 self.collectionView.reloadData()
             }
         } else {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.pictures = []
                 self.getMultiplePicutres()
                 self.collectionView.reloadData()
@@ -124,7 +126,8 @@ extension PictureViewController {
         guard segmentControl.selectedSegmentIndex == 0 else { return }
         dataService.getPictures { pictures, error in
             if let pictures = pictures {
-                DispatchQueue.main.async{
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.pictures.append(contentsOf: pictures)
                     self.collectionView.reloadData()
                 }

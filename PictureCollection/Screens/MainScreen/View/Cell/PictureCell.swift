@@ -12,7 +12,7 @@ final class PictureCell: UICollectionViewCell {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var favouriteButton: UIButton!
     
-    var viewLink: PictureViewController?
+    private var viewLink: PictureViewController?
     let identifier  = "Cell"
     
     func setupView(pictureInfo: PictureModel) {
@@ -21,7 +21,8 @@ final class PictureCell: UICollectionViewCell {
     }
     
     @IBAction func favouriteButtonTapped(_ sender: UIButton) {
-        viewLink?.addToFavourite(cell: self)
+        guard let viewLink = viewLink else { return }
+        viewLink.addToFavourite(cell: self)
         if sender.currentImage != UIImage(systemName: "suit.heart.fill") {
             sender.setImage(UIImage(systemName: "suit.heart.fill"), for: .normal)
         } else {
@@ -30,7 +31,8 @@ final class PictureCell: UICollectionViewCell {
     }
     
     private func hideButton() {
-        if viewLink?.segmentControl.selectedSegmentIndex == 1 {
+        guard let viewLink = viewLink else { return }
+        if viewLink.segmentControl.selectedSegmentIndex == 1 {
             favouriteButton.isHidden = true
         } else {
             favouriteButton.isHidden = false
